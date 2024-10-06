@@ -13,14 +13,14 @@ const userSchema = new Schema({
     trim: true,
     lowercase: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
   experienceLevel: {
     type: String,
-    enum: ["Beginner", "Intermediate", "Advanced"], // You can adjust the levels based on your needs
+    enum: ["Beginner", "Intermediate", "Advanced"],
     required: true,
+  },
+  firebaseUid: {
+    type: String,
+    required: true, // This will store the Firebase UID
   },
 });
 
