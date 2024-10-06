@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js"; // Import your User model
 import { validationResult } from "express-validator"; // For validation
-import asyncHandler from "../utils/AsyncHandler.js"
+import asyncHandler from "../utils/AsyncHandler.js";
+import ApiError from "../utils/ApiError.js";
 
 // Controller function to handle user signup
 const signupUser = asyncHandler(async (req, res) => {
@@ -32,11 +33,13 @@ const signupUser = asyncHandler(async (req, res) => {
     await newUser.save();
 
     // Send success response
-    res.status(201).json({ message: "User registered successfully", user: newUser });
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user: newUser });
   } catch (error) {
     console.error("Error during signup:", error);
-    res.status(500).json({ message: "Server error during user registration" });
+    throw new ApiError(500, "Server error during user registration");
   }
 });
 
-export {signupUser};
+export { signupUser };

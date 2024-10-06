@@ -25,9 +25,11 @@ app.use(cookieParser()); // Parse cookies
 // Routes import
 import userRouter from "./src/routes/user.routes.js";
 
+
 // Routes declaration
 // Change this line
 app.use("/api/v1/users", userRouter); // Update to match your API versioning
+
 
 // Export the app for server initiation
 export { app };
