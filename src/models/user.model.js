@@ -23,8 +23,21 @@ const userSchema = new Schema({
     required: true, // This will store the Firebase UID
   },
   unsolvedQuestions: {
-    type: [String], // or [Schema.Types.ObjectId] if referencing another schema
-    default: [], // Initializes with an empty array
+    type: [{ question: String, link: String }], // Specify the type as an array of objects
+    default: [
+      {
+        question: "What is the time complexity of binary search?",
+        link: "https://example.com/question1",
+      },
+      {
+        question: "Explain the difference between a stack and a queue.",
+        link: "https://example.com/question2",
+      },
+      {
+        question: "What is dynamic programming?",
+        link: "https://example.com/question3",
+      },
+    ],
   },
 });
 
