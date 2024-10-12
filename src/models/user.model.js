@@ -26,15 +26,15 @@ const userSchema = new Schema({
     type: [{ question: String, link: String }], // Specify the type as an array of objects
     default: [
       {
-        question: "What is the time complexity of binary search?",
+        question: "Example Question 1",
         link: "https://example.com/question1",
       },
       {
-        question: "Explain the difference between a stack and a queue.",
+        question: "Example Question 2",
         link: "https://example.com/question2",
       },
       {
-        question: "What is dynamic programming?",
+        question: "Example Question 3",
         link: "https://example.com/question3",
       },
     ],
