@@ -27,6 +27,7 @@ const signupUser = asyncHandler(async (req, res) => {
       email,
       experienceLevel,
       firebaseUid, // Store the Firebase UID
+      unsolvedQuestions: [], // Initialize the unsolved questions array
     });
 
     // Save the user to MongoDB
@@ -72,6 +73,12 @@ const addUnsolvedQuestion = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Check if the question already exists
+    const questionExists = user.unsolvedQuestions.some((q) => q.link === link);
+    if (questionExists) {
+      return res.status(400).json({ message: "Question already exists" });
+    }
+
     // Add the new question to the unsolved questions array
     user.unsolvedQuestions.push({ question, link });
     await user.save(); // Save the updated user document
@@ -84,4 +91,36 @@ const addUnsolvedQuestion = asyncHandler(async (req, res) => {
   }
 });
 
-export { signupUser, getUnsolvedQuestions,addUnsolvedQuestion };
+// Controller function to delete an unsolved question
+const deleteUnsolvedQuestion = asyncHandler(async (req, res) => {
+  const { email } = req.params; // Get email from params
+  const { questionName } = req.body; // Expecting the question name in the request body
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Filter the unsolvedQuestions array to remove the question with the matching name
+    user.unsolvedQuestions = user.unsolvedQuestions.filter(
+      (question) =>
+        question.question.toLowerCase() !== questionName.toLowerCase()
+    );
+
+    await user.save();
+
+    res.status(200).json({ message: "Question deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting question:", error);
+    throw new ApiError(500, "Internal server error");
+  }
+});
+
+export {
+  signupUser,
+  getUnsolvedQuestions,
+  addUnsolvedQuestion,
+  deleteUnsolvedQuestion,
+};

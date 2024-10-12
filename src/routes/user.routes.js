@@ -3,6 +3,7 @@ import {
   signupUser,
   getUnsolvedQuestions,
   addUnsolvedQuestion,
+  deleteUnsolvedQuestion,
 } from "../controllers/user.controller.js";
 import { body } from "express-validator"; // For validation
 
@@ -26,6 +27,10 @@ router.route("/signup").post(
 // GET /api/v1/users/:email/unsolved-questions - Fetch unsolved questions for the user
 router.route("/:email/unsolved-questions").get(getUnsolvedQuestions);
 
+// POST /api/v1/users/:email/unsolved-questions - Add an unsolved question
 router.route("/:email/unsolved-questions").post(addUnsolvedQuestion);
+
+// DELETE /api/v1/users/:email/unsolved-questions - Delete an unsolved question by name
+router.route("/:email/unsolved-questions").delete(deleteUnsolvedQuestion);
 
 export default router;
