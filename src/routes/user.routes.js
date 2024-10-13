@@ -48,7 +48,7 @@ router.route("/logs").post(
     body("link").isURL().withMessage("Valid link is required"),
     body("dateSolved").notEmpty().withMessage("Date solved is required"),
     body("topic").notEmpty().withMessage("Topic is required"),
-    body("learning").notEmpty().withMessage("Learning details are required"),
+    //body("learning").notEmpty().withMessage("Learning details are required"),
   ],
   addQuestionLog // Call the controller function to add a question log
 );
