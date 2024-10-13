@@ -10,10 +10,12 @@ dotenv.config({
 const app = express();
 
 // CORS configuration
+// Configure CORS
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN, // Use an environment variable for the allowed origin
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    origin: process.env.CORS_ORIGIN, // Allow your frontend origin
+    methods: ["GET", "POST", "DELETE"], // Specify allowed HTTP methods
+    credentials: true, // Enable credentials if needed
   })
 );
 
@@ -25,11 +27,9 @@ app.use(cookieParser()); // Parse cookies
 // Routes import
 import userRouter from "./src/routes/user.routes.js";
 
-
 // Routes declaration
 // Change this line
 app.use("/api/v1/users", userRouter); // Update to match your API versioning
-
 
 // Export the app for server initiation
 export { app };

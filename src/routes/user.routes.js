@@ -4,6 +4,7 @@ import {
   getUnsolvedQuestions,
   addUnsolvedQuestion,
   deleteUnsolvedQuestion,
+  getQuestionLogsByEmail,
 } from "../controllers/user.controller.js";
 import { body } from "express-validator"; // For validation
 
@@ -32,5 +33,8 @@ router.route("/:email/unsolved-questions").post(addUnsolvedQuestion);
 
 // DELETE /api/v1/users/:email/unsolved-questions - Delete an unsolved question by name
 router.route("/:email/unsolved-questions").delete(deleteUnsolvedQuestion);
+
+// GET /api/v1/users/logs/:email - Fetch question logs for the user
+router.route("/logs/:email").get(getQuestionLogsByEmail);
 
 export default router;
