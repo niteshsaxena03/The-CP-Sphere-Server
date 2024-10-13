@@ -168,6 +168,35 @@ const addQuestionLog = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteQuestionLog = async (req, res) => {
+  const { email } = req.params; // Get the email from the request parameters
+  const { questionName } = req.body; // Get the question name from the request body
+
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Filter out the log with the specified question name from questionLogs
+    user.questionLogs = user.questionLogs.filter(
+      (log) => log.questionName !== questionName
+    );
+
+    await user.save(); // Save the updated user document
+
+    return res
+      .status(200)
+      .json({ message: "Question log deleted successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error deleting question log", error });
+  }
+};
+
 export {
   signupUser,
   getUnsolvedQuestions,
@@ -175,4 +204,5 @@ export {
   deleteUnsolvedQuestion,
   getQuestionLogsByEmail,
   addQuestionLog,
+  deleteQuestionLog,
 };

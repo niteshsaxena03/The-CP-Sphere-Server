@@ -6,6 +6,7 @@ import {
   deleteUnsolvedQuestion,
   getQuestionLogsByEmail,
   addQuestionLog,
+  deleteQuestionLog,
 } from "../controllers/user.controller.js";
 import { body } from "express-validator"; // For validation
 
@@ -51,5 +52,14 @@ router.route("/logs").post(
   ],
   addQuestionLog // Call the controller function to add a question log
 );
+
+// DELETE /api/v1/users/logs/:email - Delete a question log by name
+router.route("/logs/:email").delete(
+  [
+    body("questionName").notEmpty().withMessage("Question name is required"), // Validation for question name
+  ],
+  deleteQuestionLog // Call the controller function to delete a question log
+);
+
 
 export default router;
