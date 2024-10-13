@@ -118,7 +118,7 @@ const deleteUnsolvedQuestion = asyncHandler(async (req, res) => {
   }
 });
 
-const getQuestionLogsByEmail = async (req, res) => {
+const getQuestionLogsByEmail = asyncHandler(async (req, res) => {
   try {
     const { email } = req.params; // Get user email from the request parameters
     const user = await User.findOne({ email }); // Fetch user by email
@@ -132,7 +132,41 @@ const getQuestionLogsByEmail = async (req, res) => {
     console.error("Error fetching question logs:", error);
     res.status(500).json({ message: "Server error" });
   }
-};
+});
+
+const addQuestionLog = asyncHandler(async (req, res) => {
+  const { email, questionName, link, dateSolved, topic, learning } = req.body;
+
+  try {
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Create new question log object
+    const newLog = {
+      questionName,
+      link,
+      dateSolved,
+      topic,
+      learning,
+    };
+
+    // Push the new log into the user's questionLogs array
+    user.questionLogs.push(newLog);
+
+    // Save the updated user document
+    await user.save();
+
+    return res
+      .status(201)
+      .json({ message: "Question log added successfully", log: newLog });
+  } catch (error) {
+    console.error("Error adding question log:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
 
 export {
   signupUser,
@@ -140,4 +174,5 @@ export {
   addUnsolvedQuestion,
   deleteUnsolvedQuestion,
   getQuestionLogsByEmail,
+  addQuestionLog,
 };

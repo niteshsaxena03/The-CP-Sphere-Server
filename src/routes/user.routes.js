@@ -5,6 +5,7 @@ import {
   addUnsolvedQuestion,
   deleteUnsolvedQuestion,
   getQuestionLogsByEmail,
+  addQuestionLog,
 } from "../controllers/user.controller.js";
 import { body } from "express-validator"; // For validation
 
@@ -36,5 +37,19 @@ router.route("/:email/unsolved-questions").delete(deleteUnsolvedQuestion);
 
 // GET /api/v1/users/logs/:email - Fetch question logs for the user
 router.route("/logs/:email").get(getQuestionLogsByEmail);
+
+// POST /api/v1/users/logs - Add a question log for the user
+router.route("/logs").post(
+  [
+    // Validation checks (you can add validations as needed)
+    body("email").isEmail().withMessage("Valid email is required"),
+    body("questionName").notEmpty().withMessage("Question name is required"),
+    body("link").isURL().withMessage("Valid link is required"),
+    body("dateSolved").notEmpty().withMessage("Date solved is required"),
+    body("topic").notEmpty().withMessage("Topic is required"),
+    body("learning").notEmpty().withMessage("Learning details are required"),
+  ],
+  addQuestionLog // Call the controller function to add a question log
+);
 
 export default router;
