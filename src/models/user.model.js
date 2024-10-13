@@ -23,7 +23,7 @@ const userSchema = new Schema({
     required: true, // This will store the Firebase UID
   },
   unsolvedQuestions: {
-    type: [{ question: String, link: String }], // Specify the type as an array of objects
+    type: [{ question: String, link: String }],
     default: [
       {
         question: "Example Question 1",
@@ -36,6 +36,33 @@ const userSchema = new Schema({
       {
         question: "Example Question 3",
         link: "https://example.com/question3",
+      },
+    ],
+  },
+  questionLogs: {
+    type: [
+      {
+        questionName: String,
+        link: String,
+        dateSolved: Date,
+        topic: String,
+        learning: String,
+      },
+    ],
+    default: [
+      {
+        questionName: "Dummy Question 1",
+        link: "https://example.com/question-log1",
+        dateSolved: new Date("2024-10-01"),
+        topic: "Data Structures",
+        learning: "Learned about arrays and linked lists.",
+      },
+      {
+        questionName: "Dummy Question 2",
+        link: "https://example.com/question-log2",
+        dateSolved: new Date("2024-10-05"),
+        topic: "Algorithms",
+        learning: "Understood the concept of sorting algorithms.",
       },
     ],
   },
