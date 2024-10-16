@@ -26,10 +26,14 @@ app.use(cookieParser()); // Parse cookies
 
 // Routes import
 import userRouter from "./src/routes/user.routes.js";
+import leetcodeRouter from "./src/routes/leetcode.routes.js"; // Import leetcode routes
 
 // Routes declaration
 // Change this line
 app.use("/api/v1/users", userRouter); // Update to match your API versioning
+app.use("/api/v1/leetcode", leetcodeRouter); // Add leetcode routes
+
 
 // Export the app for server initiation
 export { app };
+

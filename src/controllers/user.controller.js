@@ -168,7 +168,7 @@ const addQuestionLog = asyncHandler(async (req, res) => {
   }
 });
 
-const deleteQuestionLog = async (req, res) => {
+const deleteQuestionLog = asyncHandler(async (req, res) => {
   const { email } = req.params; // Get the email from the request parameters
   const { questionName } = req.body; // Get the question name from the request body
 
@@ -195,7 +195,9 @@ const deleteQuestionLog = async (req, res) => {
       .status(500)
       .json({ message: "Error deleting question log", error });
   }
-};
+});
+
+
 
 export {
   signupUser,
