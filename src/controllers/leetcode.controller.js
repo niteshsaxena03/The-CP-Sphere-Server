@@ -44,4 +44,13 @@ const addLeetCodeUsername = asyncHandler(async (req, res) => {
   }
 });
 
-export { addLeetCodeUsername }; // Export the controller function for use in your routes
+const getLeetCodeUsernames = async (req, res) => {
+  try {
+    const usernames = await LeetCodeUsername.find(); // Fetch all usernames
+    res.status(200).json(usernames); // Return the usernames in the response
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching usernames", error });
+  }
+};
+
+export { addLeetCodeUsername, getLeetCodeUsernames }; // Export the controller function for use in your routes

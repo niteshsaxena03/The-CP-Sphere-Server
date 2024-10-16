@@ -13,9 +13,9 @@ const app = express();
 // Configure CORS
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN, // Allow your frontend origin
-    methods: ["GET", "POST", "DELETE"], // Specify allowed HTTP methods
-    credentials: true, // Enable credentials if needed
+    origin: process.env.CORS_ORIGIN, // Use the environment variable for better security
+    methods: ["GET", "POST", "DELETE"],
+    credentials: true,
   })
 );
 

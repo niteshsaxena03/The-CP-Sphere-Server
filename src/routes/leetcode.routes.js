@@ -1,6 +1,9 @@
 import express from "express";
 import { body } from "express-validator"; // Importing validation middleware
-import { addLeetCodeUsername } from "../controllers/leetcode.controller.js"; // Adjust the path as necessary
+import {
+  addLeetCodeUsername,
+  getLeetCodeUsernames,
+} from "../controllers/leetcode.controller.js"; // Import both controller functions
 
 const router = express.Router();
 
@@ -16,5 +19,8 @@ router.post(
   ],
   addLeetCodeUsername // Controller function to handle the request
 );
+
+// Route to get all LeetCode usernames
+router.get("/leetcode-username", getLeetCodeUsernames); // Add this line for the GET route
 
 export default router;
