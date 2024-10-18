@@ -1,18 +1,27 @@
-import { Message } from "../models/message.model.js"; // Adjust the import path as necessary
-import asyncHandler from "../utils/AsyncHandler.js";
+import asyncHandler from "../utils/AsyncHandler.js"; // Import asyncHandler for handling async errors
+import { validationResult } from "express-validator"; // Import validationResult for validation checks
+import ApiError from "../utils/ApiError.js"; // Import your custom ApiError class
+import Message from "../models/message.model.js"; // Import the Message model
 
 // Controller for adding a new message
 const addMessage = asyncHandler(async (req, res) => {
-  try {
-    const { name, message, date, time } = req.body;
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new ApiError(400, "Validation error", errors.array());
+  }
 
-    // Find the existing message document (if it exists)
+  const { name, message, date, time } = req.body;
+
+  try {
+    // Find the existing message document (assuming there's only one document)
     let messageDocument = await Message.findOne();
 
-    // If no document exists, create one
+    // If no document exists, return a 404 response
     if (!messageDocument) {
-      messageDocument = new Message({
-        messages: [], // Initialize with an empty array
+      return res.status(404).json({
+        success: false,
+        message: "No message document found. Please create one first.",
       });
     }
 
@@ -20,56 +29,44 @@ const addMessage = asyncHandler(async (req, res) => {
     const newMessage = {
       name,
       message,
-      date,
+      date: date || new Date(), // Use provided date or current date if not provided
       time,
     };
 
     // Add the new message to the messages array
     messageDocument.messages.push(newMessage);
-
-    // Save the updated message document to the database
     await messageDocument.save();
 
-    // Respond with the created message and updated messages
-    return res.status(201).json({
+    res.status(201).json({
       success: true,
       data: messageDocument.messages, // Return the updated messages array
+      message: "Message added successfully",
     });
   } catch (error) {
     console.error("Error adding message:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+    throw new ApiError(500, "Server error while adding message");
   }
 });
 
 // Controller function to fetch all messages
 const getMessages = asyncHandler(async (req, res) => {
   try {
-    // Attempt to find the first message document
-    let messageDocument = await Message.findOne();
-
-    // If no document exists, create one with an empty messages array
+    let messageDocument = await Message.findOne(); // Find the first message document
     if (!messageDocument) {
+      // Initialize a new message document if none exists
       messageDocument = new Message({
         messages: [], // Initialize with an empty array
       });
-      await messageDocument.save(); // Save the new document to the database
+      await messageDocument.save(); // Save to the database
     }
-
-    // Return the messages array (which may now be empty)
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       data: messageDocument.messages, // Return the messages array
     });
   } catch (error) {
     console.error("Error retrieving messages:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+    throw new ApiError(500, "Error fetching messages");
   }
 });
 
-export { addMessage, getMessages };
+export { addMessage, getMessages }; // Export the controller function for use in your routes

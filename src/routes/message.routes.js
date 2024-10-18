@@ -10,7 +10,7 @@ router.post(
   [
     body("name").notEmpty().withMessage("Name is required"),
     body("message").notEmpty().withMessage("Message is required"),
-    body("date").optional().isISO8601().withMessage("Invalid date format"), // Made optional
+    body("date").optional().isISO8601().withMessage("Invalid date format"),
     body("time").notEmpty().withMessage("Time is required"),
   ],
   addMessage // Controller function to handle the request
