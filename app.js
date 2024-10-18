@@ -10,7 +10,6 @@ dotenv.config({
 const app = express();
 
 // CORS configuration
-// Configure CORS
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN, // Use the environment variable for better security
@@ -26,14 +25,14 @@ app.use(cookieParser()); // Parse cookies
 
 // Routes import
 import userRouter from "./src/routes/user.routes.js";
-import leetcodeRouter from "./src/routes/leetcode.routes.js"; // Import leetcode routes
+import leetcodeRouter from "./src/routes/leetcode.routes.js";
+import messageRouter from "./src/routes/message.routes.js";
 
 // Routes declaration
-// Change this line
 app.use("/api/v1/users", userRouter); // Update to match your API versioning
 app.use("/api/v1/leetcode", leetcodeRouter); // Add leetcode routes
+app.use("/api/v1/messages", messageRouter); // Add message routes
 
 
 // Export the app for server initiation
 export { app };
-
