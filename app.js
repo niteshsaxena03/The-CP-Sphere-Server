@@ -2,6 +2,8 @@ import express, { urlencoded } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv"; // Ensure you have dotenv for environment variables
+import Message from "./src/models/message.model.js";
+import cron from "node-cron"; // Import the cron library
 
 dotenv.config({
   path: "./src/.env",
@@ -33,6 +35,15 @@ app.use("/api/v1/users", userRouter); // Update to match your API versioning
 app.use("/api/v1/leetcode", leetcodeRouter); // Add leetcode routes
 app.use("/api/v1/messages", messageRouter); // Add message routes
 
+// Schedule a job to run every Sunday at midnight
+cron.schedule("0 0 * * 0", async () => {
+  try {
+    await Message.deleteMany({}); // This will delete all messages
+    console.log("All messages cleared successfully.");
+  } catch (error) {
+    console.error("Error clearing messages:", error);
+  }
+});
 
 // Export the app for server initiation
 export { app };
