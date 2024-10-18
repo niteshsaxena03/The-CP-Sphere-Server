@@ -197,6 +197,23 @@ const deleteQuestionLog = asyncHandler(async (req, res) => {
   }
 });
 
+// Controller to get the user by email
+const getUserByEmail = asyncHandler(async (req, res) => {
+  const { email } = req.params;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      name: user.fullName, // Ensure this is correct
+      email: user.email,
+    },
+  });
+});
 
 
 export {
@@ -207,4 +224,5 @@ export {
   getQuestionLogsByEmail,
   addQuestionLog,
   deleteQuestionLog,
+  getUserByEmail,
 };

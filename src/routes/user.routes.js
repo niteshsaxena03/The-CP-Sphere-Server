@@ -7,6 +7,7 @@ import {
   getQuestionLogsByEmail,
   addQuestionLog,
   deleteQuestionLog,
+  getUserByEmail,
 } from "../controllers/user.controller.js";
 import { body } from "express-validator"; // For validation
 
@@ -60,6 +61,9 @@ router.route("/logs/:email").delete(
   ],
   deleteQuestionLog // Call the controller function to delete a question log
 );
+
+// Route to fetch user details
+router.route("/email/:email").get(getUserByEmail); // Fetch user by emailry
 
 
 export default router;
